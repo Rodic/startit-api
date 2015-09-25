@@ -13,4 +13,6 @@ class Event < ActiveRecord::Base
     end
   end
 
+  scope :upcoming, -> { where('start_time >= ?', Time.now) }
+
 end

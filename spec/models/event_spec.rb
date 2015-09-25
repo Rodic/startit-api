@@ -302,4 +302,21 @@ RSpec.describe Event, type: :model do
       end
     end
   end
+
+
+  describe "scopes" do
+
+    describe "upcoming" do
+      it "lists upcoming events" do
+        e1 = FactoryGirl.create(:event, start_time: 0.1.seconds.from_now)
+        e2 = FactoryGirl.create(:event, start_time: 2.days.from_now)
+        e3 = FactoryGirl.create(:event, start_time: 1.week.from_now)
+        e4 = FactoryGirl.create(:event, start_time: 0.1.seconds.from_now)
+
+        sleep(0.2)
+
+        expect(Event.upcoming).to contain_exactly(e2, e3)
+      end
+    end
+  end
 end

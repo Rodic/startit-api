@@ -18,6 +18,8 @@ gem 'puma',   '2.14.0'
 
 gem 'figaro', '1.1.0'
 
+gem 'active_model_serializers', '0.9.3'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
