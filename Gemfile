@@ -20,6 +20,8 @@ gem 'figaro', '1.1.0'
 
 gem 'active_model_serializers', '0.9.3'
 
+gem 'rack-cors', '0.4.0'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
