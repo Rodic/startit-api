@@ -40,11 +40,13 @@ CREATE TABLE events (
     start_time timestamp with time zone NOT NULL,
     description character varying(500) NOT NULL,
     title character varying(150) DEFAULT NULL::character varying,
+    type character varying(25) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     CONSTRAINT events_start_latitude_check CHECK (((start_latitude >= ((-90))::numeric) AND (start_latitude <= (90)::numeric))),
     CONSTRAINT events_start_longitude_check CHECK (((start_longitude >= ((-180))::numeric) AND (start_longitude <= (180)::numeric))),
-    CONSTRAINT events_start_time_check CHECK ((start_time > now()))
+    CONSTRAINT events_start_time_check CHECK ((start_time > now())),
+    CONSTRAINT events_type_check CHECK (((type)::text = ANY ((ARRAY['Run'::character varying, 'BikeRide'::character varying])::text[])))
 );
 
 

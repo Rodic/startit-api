@@ -1,10 +1,11 @@
 class Event < ActiveRecord::Base
 
-  validates_presence_of     :start_latitude, :start_longitude, :start_time, :description
+  validates_presence_of     :start_latitude, :start_longitude, :start_time, :description, :type
   validates_numericality_of :start_latitude, greater_than_or_equal_to: -90, less_than_or_equal_to: 90
   validates_numericality_of :start_longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180
   validates_length_of       :description, maximum: 500
   validates_length_of       :title, maximum: 150
+  validates_inclusion_of    :type, in: %w( Run BikeRide ), message: "must be 'Run' or 'BikeRide'"
   validate                  :start_time_cannot_be_in_the_past
 
   def start_time_cannot_be_in_the_past
@@ -15,4 +16,10 @@ class Event < ActiveRecord::Base
 
   scope :upcoming, -> { where('start_time >= ?', Time.now) }
 
+end
+
+class Run < Event
+end
+
+class BikeRide < Event
 end

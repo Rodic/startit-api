@@ -144,6 +144,26 @@ RSpec.describe Event, type: :model do
       end
     end
 
+    describe "type" do
+
+      it "fails when is null" do
+        e = FactoryGirl.build(:event, type: nil)
+        expect{ e.save(validate: false) }.to raise_exception(ActiveRecord::StatementInvalid, /PG::NotNullViolation/)
+      end
+
+      it "fails when type is not 'Run' or 'BikeRide'" do
+        [ 'Run', 'BikeRide' ].each do |t|
+          e = FactoryGirl.build(:event, type: t)
+          expect{ e.save(validate: false) }.not_to raise_exception
+        end
+
+        [ 'Unknown', 'Dinner', 'Karate' ].each do |t|
+          e = FactoryGirl.build(:event, type: t)
+          expect{ e.save(validate: false) }.to raise_exception(ActiveRecord::StatementInvalid, /PG::CheckViolation/)
+        end
+      end
+    end
+
     describe "created_at" do
 
       it "is created automatically" do
@@ -289,6 +309,28 @@ RSpec.describe Event, type: :model do
       end
     end
 
+    describe "type" do
+
+      it "fails when nil" do
+        e = FactoryGirl.build(:event, type: nil)
+        expect(e).not_to be_valid
+        expect(e.errors[:type]).to include("can't be blank")
+      end
+
+      it "fails when not 'Run' or 'BikeRide'" do
+        [ 'Run', 'BikeRide' ].each do |t|
+          e = FactoryGirl.build(:event, type: t)
+          expect(e).to be_valid
+        end
+
+        [ 'Unknown', 'Dinner', 'Karate' ].each do |t|
+          e = FactoryGirl.build(:event, type: t)
+          expect(e).not_to be_valid
+          expect(e.errors[:type]).to include("must be 'Run' or 'BikeRide'")
+        end
+      end
+    end
+
     describe "updated_at" do
 
       it "is auto updated when record is edited" do
@@ -308,10 +350,10 @@ RSpec.describe Event, type: :model do
 
     describe "upcoming" do
       it "lists upcoming events" do
-        e1 = FactoryGirl.create(:event, start_time: 0.1.seconds.from_now)
-        e2 = FactoryGirl.create(:event, start_time: 2.days.from_now)
-        e3 = FactoryGirl.create(:event, start_time: 1.week.from_now)
-        e4 = FactoryGirl.create(:event, start_time: 0.1.seconds.from_now)
+        e1 = FactoryGirl.create(:run, start_time: 0.1.seconds.from_now)
+        e2 = FactoryGirl.create(:run, start_time: 2.days.from_now)
+        e3 = FactoryGirl.create(:bike_ride, start_time: 1.week.from_now)
+        e4 = FactoryGirl.create(:bike_ride, start_time: 0.1.seconds.from_now)
 
         sleep(0.2)
 

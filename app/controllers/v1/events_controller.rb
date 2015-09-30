@@ -37,7 +37,7 @@ class V1::EventsController < ApplicationController
 
     def event_params
       begin
-        params.require(:event).permit(:title, :description, :start_latitude, :start_longitude, :start_time)
+        params.require(:event).permit(:title, :description, :start_latitude, :start_longitude, :start_time, :type)
       rescue
         {}
       end

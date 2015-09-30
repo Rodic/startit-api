@@ -12,6 +12,8 @@ class CreateEvents < ActiveRecord::Migration
         description varchar(500) not null,
         title varchar(150) default null,
 
+        type varchar(25) not null CHECK(type IN ('Run', 'BikeRide')),
+
         created_at timestamp with time zone not null default NOW(),
         updated_at timestamp with time zone not null default NOW()
       );
