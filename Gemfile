@@ -22,12 +22,18 @@ gem 'active_model_serializers', '0.9.3'
 
 gem 'rack-cors', '0.4.0'
 
+gem 'jwt', '1.5.1'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
   gem 'rspec-rails',        '3.3.3'
   gem 'factory_girl_rails', '4.5.0'
+end
+
+group :test do
+  gem 'webmock', '1.21.0'
 end
 
 group :development do
