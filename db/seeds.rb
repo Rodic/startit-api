@@ -11,6 +11,7 @@
   lon  = rand(20.449857..20.467388)
   time = rand(1..10).days.from_now
   desc = "My #{rand(4..100)}th run"
+  type = ['Run', 'BikeRide'].sample
 
-  Event.create(start_latitude: lat, start_longitude: lon, start_time: time, description: desc)
+  Event.create(start_latitude: lat, start_longitude: lon, start_time: time, description: desc, type: type)
 end
