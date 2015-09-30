@@ -4,11 +4,11 @@ class V1::EventsController < ApplicationController
 
   def index
     @events = Event.upcoming
-    render json: @events, status: :ok
+    render json: @events, each_serializer: V1::EventSerializer, status: :ok
   end
 
   def show
-    render json: @event, status: :ok
+    render json: @event, serializer: V1::EventSerializer, status: :ok
   end
 
   def create
