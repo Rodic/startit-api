@@ -17,6 +17,10 @@ class CreateEvents < ActiveRecord::Migration
         created_at timestamp with time zone not null default NOW(),
         updated_at timestamp with time zone not null default NOW()
       );
+
+      create index start_latitude_idx on events(start_latitude);
+      create index start_longitude_idx on events(start_longitude);
+      create index start_time_idx on events(start_time);
     }
     execute sql
   end

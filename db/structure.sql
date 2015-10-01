@@ -94,6 +94,27 @@ ALTER TABLE ONLY events
 
 
 --
+-- Name: start_latitude_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX start_latitude_idx ON events USING btree (start_latitude);
+
+
+--
+-- Name: start_longitude_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX start_longitude_idx ON events USING btree (start_longitude);
+
+
+--
+-- Name: start_time_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX start_time_idx ON events USING btree (start_time);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
