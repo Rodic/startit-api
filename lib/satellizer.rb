@@ -4,21 +4,22 @@ class SatellizerProvider
     satellizer_params[:provider].classify.constantize.new(satellizer_params)
   end
 
-  def get_profile
-    @profile ||= open(profile_uri).read
+  def get_provider_name
+    raise NotImplementedError, "Implement it in subclass!"
   end
 
-  def get_jwt
-    { token: JWT.encode(get_profile, Rails.application.secrets.secret_key_base) }
+  def get_uid
+    raise NotImplementedError, "Implement it in subclass!"
   end
 
-  private
+  def get_username
+    raise NotImplementedError, "Implement it in subclass!"
+  end
 
-    def profile_uri
-      raise NotImplementedError, "Implement it in subclass!"
-    end
+  def get_email
+    raise NotImplementedError, "Implement it in subclass!"
+  end
 end
-
 
 class Facebook < SatellizerProvider
 
@@ -31,7 +32,27 @@ class Facebook < SatellizerProvider
     }
   end
 
+  def get_provider_name
+    'facebook'
+  end
+
+  def get_uid
+    get_profile["id"]
+  end
+
+  def get_username
+    get_profile["name"]
+  end
+
+  def get_email
+    get_profile["email"]
+  end
+
   private
+
+    def get_profile
+      @profile ||= JSON.parse(open(profile_uri).read)
+    end
 
     def access_token_uri
       base = "https://graph.facebook.com/oauth/access_token"

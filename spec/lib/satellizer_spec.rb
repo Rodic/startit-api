@@ -62,21 +62,31 @@ describe "SatellizerProvider" do
 
     describe "get_profile" do
       it "returns correct data" do
-        expect(facebook.get_profile).to eq('{"name":"John Doe","id":"1234567891234567"}')
+        expect(facebook.send(:get_profile)).to eq({"name" => "John Doe","id" => "1234567891234567"})
       end
     end
 
-
-    describe "get_jwt" do
-
-      it "returns correct token" do
-        expect(facebook.get_jwt).to eq(
-          {:token => "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IntcIm5hbWVcIjpcIkpvaG4gRG9lXCIsXCJpZFwiOlwiMTIzNDU2Nzg5MTIzNDU2N1wifSI.e7cZVC_qYx-PllUGRlHqk-3FUAGLoQ_sjg1m5WEbjgs"}
-        )
+    describe "get_provider_name" do
+      it "returns correct name" do
+        expect(facebook.get_provider_name).to eq("facebook")
       end
+    end
 
-      it "gets verified with rails secret_key_base" do
-        expect{ JWT.decode(facebook.get_jwt[:token], Rails.application.secrets.secret_key_base, true) }.not_to raise_error
+    describe "get_uid" do
+      it "returns correct uid" do
+        expect(facebook.get_uid).to eq("1234567891234567")
+      end
+    end
+
+    describe "get_username" do
+      it "returns correct username" do
+        expect(facebook.get_username).to eq("John Doe")
+      end
+    end
+
+    describe "get_email" do
+      it "returns correct email" do
+        expect(facebook.get_email).to be_nil
       end
     end
   end
