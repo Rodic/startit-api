@@ -27,7 +27,7 @@ RSpec.describe V1::AppController, type: :controller do
       expect(assigns(:cu)).to eq(user)
     end
 
-    it "returns nil when invalid token is presented" do
+    it "returns nil when invalid authorization header is present" do
       request.headers["HTTP_AUTHORIZATION"] = "XXXXXXXX"
       get :index
 
