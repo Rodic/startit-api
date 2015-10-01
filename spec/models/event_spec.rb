@@ -190,15 +190,11 @@ RSpec.describe Event, type: :model do
     describe "start_latitude" do
 
       it "fails when is nil" do
-        e = FactoryGirl.build(:event, start_latitude: nil)
-        expect(e).not_to be_valid
-        expect(e.errors[:start_latitude]).to include("can't be blank")
-      end
-
-      it "fails when is empty" do
-        e = FactoryGirl.build(:event, start_latitude: '')
-        expect(e).not_to be_valid
-        expect(e.errors[:start_latitude]).to include("can't be blank")
+        [ nil, '' ].each do |l|
+          e = FactoryGirl.build(:event, start_latitude: l)
+          expect(e).not_to be_valid
+          expect(e.errors[:start_latitude]).to include("can't be blank")
+        end
       end
 
       it "fails when not a number" do
@@ -222,15 +218,11 @@ RSpec.describe Event, type: :model do
 
     describe "start_longitude" do
       it "fails when is nil" do
-        e = FactoryGirl.build(:event, start_longitude: nil)
-        expect(e).not_to be_valid
-        expect(e.errors[:start_longitude]).to include("can't be blank")
-      end
-
-      it "fails when is empty" do
-        e = FactoryGirl.build(:event, start_longitude: '')
-        expect(e).not_to be_valid
-        expect(e.errors[:start_longitude]).to include("can't be blank")
+        [ nil, '' ].each do |l|
+          e = FactoryGirl.build(:event, start_longitude: l)
+          expect(e).not_to be_valid
+          expect(e.errors[:start_longitude]).to include("can't be blank")
+        end
       end
 
       it "fails when not a number" do
