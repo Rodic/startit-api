@@ -61,9 +61,9 @@ RSpec.describe User, type: :model do
 
     describe "latitude" do
 
-      it "fails when is null" do
+      it "is optional" do
         u = FactoryGirl.build(:user, latitude: nil)
-        expect{ u.save(validate: false) }.to raise_exception(ActiveRecord::StatementInvalid, /PG::NotNullViolation/)
+        expect{ u.save(validate: false) }.not_to raise_exception
       end
 
       it "fails when is less than -90" do
@@ -93,9 +93,9 @@ RSpec.describe User, type: :model do
 
     describe "longitude" do
 
-      it "fails when is null" do
+      it "is optional" do
         u = FactoryGirl.build(:user, longitude: nil)
-        expect{ u.save(validate: false) }.to raise_exception(ActiveRecord::StatementInvalid, /PG::NotNullViolation/)
+        expect{ u.save(validate: false) }.not_to raise_exception
       end
 
       it "fails when is less than -90" do
@@ -188,11 +188,10 @@ RSpec.describe User, type: :model do
 
     describe "latitude" do
 
-      it "fails when is nil" do
+      it "is optional" do
         [ nil, '' ].each do |l|
           u = FactoryGirl.build(:user, latitude: l)
-          expect(u).not_to be_valid
-          expect(u.errors[:latitude]).to include("can't be blank")
+          expect(u).to be_valid
         end
       end
 
@@ -217,11 +216,10 @@ RSpec.describe User, type: :model do
 
     describe "longitude" do
 
-      it "fails when is nil" do
+      it "is optional" do
         [ nil, '' ].each do |l|
           u = FactoryGirl.build(:user, longitude: l)
-          expect(u).not_to be_valid
-          expect(u.errors[:longitude]).to include("can't be blank")
+          expect(u).to be_valid
         end
       end
 

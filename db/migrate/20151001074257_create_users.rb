@@ -12,8 +12,8 @@ class CreateUsers < ActiveRecord::Migration
         username varchar(100) not null,
         email varchar(150) default null,
 
-        latitude  numeric(9, 7)  not null CHECK(latitude  >= -90  AND latitude  <= 90),
-        longitude numeric(10, 7) not null CHECK(longitude >= -180 AND longitude <= 180),
+        latitude  numeric(9, 7)  default null CHECK(latitude  >= -90  AND latitude  <= 90),
+        longitude numeric(10, 7) default null CHECK(longitude >= -180 AND longitude <= 180),
 
         created_at timestamp with time zone not null default NOW(),
         updated_at timestamp with time zone not null default NOW()
