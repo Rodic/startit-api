@@ -1,4 +1,4 @@
-class V1::EventsController < ApplicationController
+class V1::EventsController < V1::AppController
 
   before_action :set_event, only: [ :show, :update, :destroy ]
 

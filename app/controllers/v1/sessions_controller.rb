@@ -1,6 +1,6 @@
 require 'satellizer'
 
-class V1::SessionsController < ApplicationController
+class V1::SessionsController < V1::AppController
 
   def create
     provider = SatellizerProvider.for(params)
