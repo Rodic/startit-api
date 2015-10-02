@@ -10,7 +10,7 @@ class V1::SessionsController < V1::AppController
       u.email    = provider.get_email
     end
 
-    satellizer_token = JWT.encode({id: user.id}, Rails.application.secrets.secret_key_base)
+    satellizer_token = get_jwt(id: user.id)
     render json: { token: satellizer_token }, status: :ok
   end
 end

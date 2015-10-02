@@ -30,7 +30,7 @@ RSpec.describe V1::SessionsController, type: :controller do
       expect{ post :create, provider: provider_name }.to change{ User.count }.from(0).to(1)
       id = User.last.id
       expect(JSON.parse(response.body)).to eq(
-        { "token" => JWT.encode({id: id}, Rails.application.secrets.secret_key_base) }
+        { "token" => controller.get_jwt(id: id) }
       )
     end
   end

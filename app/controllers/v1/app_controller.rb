@@ -1,11 +1,15 @@
 class V1::AppController < ApplicationController
-  
+
   def current_user
     @current_user || get_user_from_auth_token
   end
 
   def user_signed_in?
     !current_user.nil?
+  end
+
+  def get_jwt(payload)
+    JWT.encode(payload, Rails.application.secrets.secret_key_base)
   end
 
   private
