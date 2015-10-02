@@ -140,15 +140,40 @@ RSpec.describe V1::EventsController, type: :controller do
 
   describe "destroy" do
 
-    it "returns 404 when event doesn't exists" do
-      delete :destroy, id: 0
-      expect(response).to have_http_status(:not_found)
+    describe "guest" do
+      it "fails" do
+        e = FactoryGirl.create(:event)
+        expect{ delete :destroy, id: e.id }.not_to change{Event.count}
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to eq({ "error" => "unauthorized. must be signed in" })
+      end
     end
 
-    it "succeed when id is valid" do
-      e = FactoryGirl.create(:event)
-      expect{ delete :destroy, id: e.id }.to change{Event.count}.by(-1)
-      expect(response).to have_http_status(:no_content)
+    describe "signed in user" do
+      let(:user) { FactoryGirl.create(:user) }
+
+      before :each do
+        request.headers["HTTP_AUTHORIZATION"] = "Bearer #{controller.get_auth_jwt(user)}"
+      end
+
+      it "returns 404 when event doesn't exists" do
+        delete :destroy, id: 0
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "succeed when id is valid and user is crator" do
+        e = FactoryGirl.create(:event, creator: user)
+        expect{ delete :destroy, id: e.id }.to change{Event.count}.by(-1)
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it "fails when user is not crator" do
+        user2 = FactoryGirl.create(:user)
+        e = FactoryGirl.create(:event, creator: user2)
+        expect{ delete :destroy, id: e.id }.not_to change{Event.count}
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to eq({ "error" => "unauthorized. must be event's creator" })
+      end
     end
   end
 end

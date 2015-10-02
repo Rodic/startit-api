@@ -1,7 +1,7 @@
 class V1::EventsController < V1::AppController
 
   before_action :set_event, only: [ :show, :update, :destroy ]
-  before_action :forbidden_for_guest, only: [ :create, :update ]
+  before_action :forbidden_for_guest, only: [ :create, :update, :destroy ]
 
   def index
     @events = Event.upcoming
@@ -33,8 +33,12 @@ class V1::EventsController < V1::AppController
   end
 
   def destroy
-    @event.destroy
-    head :no_content
+    if @event.creator != current_user
+      render json: { error: "unauthorized. must be event's creator" }, status: :unauthorized
+    else
+      @event.destroy
+      head :no_content
+    end
   end
 
   private
