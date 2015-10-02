@@ -8,6 +8,10 @@ class V1::AppController < ApplicationController
     !current_user.nil?
   end
 
+  def forbidden_for_guest
+    render json: { error: "unauthorized. must be signed in" }, status: :unauthorized unless user_signed_in?
+  end
+
   def get_auth_jwt(user)
     get_jwt({ iss: "start.it", id: user.id })
   end

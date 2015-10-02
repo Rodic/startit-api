@@ -35,47 +35,59 @@ RSpec.describe V1::EventsController, type: :controller do
 
   describe "create" do
 
-    it "succeeds when params are valid" do
-      params = {
-        event: {
-          description: "My morning run",
-          start_latitude: 44.82,
-          start_longitude: 20.45,
-          start_time: 1.week.from_now,
-          type: 'Run'
+    let(:valid_params) {{
+      event: {
+        description: "My morning run",
+        start_latitude: 44.82,
+        start_longitude: 20.45,
+        start_time: 1.week.from_now,
+        type: 'Run'
+      }
+    }}
+
+    let(:invalid_params) {{ event: {} }}
+
+    describe "unsigned user" do
+      it "fails with valid params" do
+        post :create, valid_params
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to eq({ "error" => "unauthorized. must be signed in" })
+      end
+    end
+
+    describe "signed user" do
+
+      let(:user) { FactoryGirl.create(:user) }
+
+      before :each do
+        request.headers["HTTP_AUTHORIZATION"] = "Bearer #{controller.get_auth_jwt(user)}"
+      end
+
+      it "succeeds when params are valid" do
+        expect{ post :create, valid_params }.to change{ Event.count }.from(0).to(1)
+        expect(Event.last.description).to eq(valid_params[:event][:description])
+        expect(Event.last.start_latitude).to eq(valid_params[:event][:start_latitude])
+        expect(Event.last.start_longitude).to eq(valid_params[:event][:start_longitude])
+        expect(Event.last.start_time).to be_within(1).of(valid_params[:event][:start_time])
+        expect(Event.last.type).to eq(valid_params[:event][:type])
+        expect(Event.last.creator).to eq(user)
+        expect(response).to have_http_status(:created)
+      end
+
+      it "fails when params are invalid" do
+        errors = {
+          "start_latitude"  => ["can't be blank", "is not a number"],
+          "start_longitude" => ["can't be blank", "is not a number"],
+          "start_time"  => ["can't be blank"],
+          "description" => ["can't be blank"],
+          "type" => ["can't be blank", "must be 'Run' or 'BikeRide'"]
         }
-      }
 
-      expect(Event.count).to eq(0)
-
-      post :create, params
-
-      expect(Event.last.description).to eq(params[:event][:description])
-      expect(Event.last.start_latitude).to eq(params[:event][:start_latitude])
-      expect(Event.last.start_longitude).to eq(params[:event][:start_longitude])
-      expect(Event.last.start_time).to be_within(1).of(params[:event][:start_time])
-      expect(Event.last.type).to eq(params[:event][:type])
-
-      expect(response).to have_http_status(:created)
+        expect{ post :create, invalid_params }.not_to change{ Event.count }
+        expect(JSON.parse(response.body)).to eq(errors)
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
-
-    it "fails when params are invalid" do
-      params = { event: {} }
-      errors = {
-        "start_latitude"  => ["can't be blank", "is not a number"],
-        "start_longitude" => ["can't be blank", "is not a number"],
-        "start_time"  => ["can't be blank"],
-        "description" => ["can't be blank"],
-        "type" => ["can't be blank", "must be 'Run' or 'BikeRide'"]
-      }
-
-      expect{ post :create, params }.not_to change{ Event.count }
-
-      post :create, params
-      expect(JSON.parse(response.body)).to eq(errors)
-      expect(response).to have_http_status(:unprocessable_entity)
-    end
-
   end
 
   describe "update" do

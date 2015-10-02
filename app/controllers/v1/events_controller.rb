@@ -1,6 +1,7 @@
 class V1::EventsController < V1::AppController
 
   before_action :set_event, only: [ :show, :update, :destroy ]
+  before_action :forbidden_for_guest, only: [ :create ]
 
   def index
     @events = Event.upcoming
@@ -13,6 +14,7 @@ class V1::EventsController < V1::AppController
 
   def create
     @event = Event.new(event_params)
+    @event.creator = current_user
     if @event.save
       render json: @event, status: :created
     else
