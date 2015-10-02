@@ -43,6 +43,7 @@ CREATE TABLE events (
     type character varying(25) NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    creator_id bigint,
     CONSTRAINT events_start_latitude_check CHECK (((start_latitude >= ((-90))::numeric) AND (start_latitude <= (90)::numeric))),
     CONSTRAINT events_start_longitude_check CHECK (((start_longitude >= ((-180))::numeric) AND (start_longitude <= (180)::numeric))),
     CONSTRAINT events_start_time_check CHECK ((start_time > now())),
@@ -183,6 +184,14 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: events_creator_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY events
+    ADD CONSTRAINT events_creator_id_fkey FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE SET NULL;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -191,4 +200,6 @@ SET search_path TO "$user",public;
 INSERT INTO schema_migrations (version) VALUES ('20150923140740');
 
 INSERT INTO schema_migrations (version) VALUES ('20151001074257');
+
+INSERT INTO schema_migrations (version) VALUES ('20151002085949');
 

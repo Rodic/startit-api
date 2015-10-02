@@ -164,6 +164,31 @@ RSpec.describe Event, type: :model do
       end
     end
 
+    describe "creator_id" do
+
+      it "can be null" do
+        e = FactoryGirl.build(:event, creator: nil)
+        expect{ e.save(validate: false) }.not_to raise_exception
+      end
+
+      it "cannot reference user that doesn't exist" do
+        e = FactoryGirl.build(:event, creator_id: 0)
+        expect{ e.save(validate: false) }.to raise_exception(ActiveRecord::InvalidForeignKey, /events_creator_id_fkey/)
+      end
+
+      it "is null when creator is deleted" do
+        u = FactoryGirl.create(:user)
+        e = FactoryGirl.create(:event, creator: u)
+
+        expect(e.creator_id).to eq(u.id)
+
+        u.destroy
+        e.reload
+
+        expect(e.creator_id).to be_nil
+      end
+    end
+
     describe "created_at" do
 
       it "is created automatically" do
@@ -323,6 +348,15 @@ RSpec.describe Event, type: :model do
       end
     end
 
+    describe "creator_id" do
+      it "can be null" do
+        [ nil, '' ].each do |c|
+          e = FactoryGirl.build(:event, creator_id: c)
+          expect(e).to be_valid
+        end
+      end
+    end
+
     describe "updated_at" do
 
       it "is auto updated when record is edited" do
@@ -334,6 +368,16 @@ RSpec.describe Event, type: :model do
 
         expect(u).not_to eq(e.updated_at)
       end
+    end
+  end
+
+  describe "associations" do
+
+    it "belongs to user (as creator)" do
+      u = FactoryGirl.create(:user)
+      e = FactoryGirl.create(:event, creator: u)
+
+      expect(e.creator).to eq(u)
     end
   end
 

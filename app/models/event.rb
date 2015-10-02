@@ -8,6 +8,8 @@ class Event < ActiveRecord::Base
   validates_inclusion_of    :type, in: %w( Run BikeRide ), message: "must be 'Run' or 'BikeRide'"
   validate                  :start_time_cannot_be_in_the_past
 
+  belongs_to :creator, class_name: User
+
   def start_time_cannot_be_in_the_past
     if start_time.present? && start_time < Time.now
       errors.add(:start_time, "can't be in the past")
