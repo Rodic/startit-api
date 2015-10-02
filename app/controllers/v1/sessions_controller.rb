@@ -10,7 +10,7 @@ class V1::SessionsController < V1::AppController
       u.email    = provider.get_email
     end
 
-    satellizer_token = get_jwt(id: user.id)
+    satellizer_token = get_auth_jwt(user)
     render json: { token: satellizer_token }, status: :ok
   end
 end

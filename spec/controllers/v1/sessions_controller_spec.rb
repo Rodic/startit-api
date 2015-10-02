@@ -28,9 +28,8 @@ RSpec.describe V1::SessionsController, type: :controller do
 
     it "renders token" do
       expect{ post :create, provider: provider_name }.to change{ User.count }.from(0).to(1)
-      id = User.last.id
       expect(JSON.parse(response.body)).to eq(
-        { "token" => controller.get_jwt(id: id) }
+        { "token" => controller.get_auth_jwt(User.last) }
       )
     end
   end

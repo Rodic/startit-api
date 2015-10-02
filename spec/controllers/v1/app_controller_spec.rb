@@ -19,7 +19,7 @@ RSpec.describe V1::AppController, type: :controller do
 
     it "returns singed user when valid authorization header is present" do
       user  = FactoryGirl.create(:user)
-      token = controller.get_jwt(id: user.id)
+      token = controller.get_auth_jwt(user)
 
       request.headers["HTTP_AUTHORIZATION"] = "Bearer #{token}"
       get :index

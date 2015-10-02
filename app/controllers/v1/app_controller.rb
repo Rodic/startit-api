@@ -8,11 +8,15 @@ class V1::AppController < ApplicationController
     !current_user.nil?
   end
 
-  def get_jwt(payload)
-    JWT.encode(payload, Rails.application.secrets.secret_key_base)
+  def get_auth_jwt(user)
+    get_jwt({ iss: "start.it", id: user.id })
   end
 
   private
+
+    def get_jwt(payload)
+      JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    end
 
     def get_user_from_auth_token
       jwt_token = (request.headers["HTTP_AUTHORIZATION"] || "").sub("Bearer ", "")
