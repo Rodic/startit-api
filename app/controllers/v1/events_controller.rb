@@ -1,7 +1,8 @@
 class V1::EventsController < V1::AppController
 
   before_action :set_event, only: [ :show, :update, :destroy ]
-  before_action :forbidden_for_guest, only: [ :create, :update, :destroy ]
+  before_action :forbidden_for_guest, except: [ :index, :show ]
+  before_action :allowed_to_creator, only: [ :update, :destroy ]
 
   def index
     @events = Event.upcoming
@@ -23,9 +24,7 @@ class V1::EventsController < V1::AppController
   end
 
   def update
-    if @event.creator != current_user
-      render json: { error: "unauthorized. must be event's creator" }, status: :unauthorized
-    elsif @event.update(event_params)
+    if @event.update(event_params)
       render json: @event, status: :ok
     else
       render json: @event.errors, status: :unprocessable_entity
@@ -33,29 +32,29 @@ class V1::EventsController < V1::AppController
   end
 
   def destroy
-    if @event.creator != current_user
-      render json: { error: "unauthorized. must be event's creator" }, status: :unauthorized
-    else
-      @event.destroy
-      head :no_content
-    end
+    @event.destroy
+    head :no_content
   end
 
   private
-
-    def event_params
-      begin
-        params.require(:event).permit(:title, :description, :start_latitude, :start_longitude, :start_time, :type)
-      rescue
-        {}
-      end
-    end
 
     def set_event
       begin
         @event = Event.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         head :not_found
+      end
+    end
+
+    def allowed_to_creator
+      render json: { error: "must be event's creator" }, status: :unauthorized unless @event.creator == current_user
+    end
+
+    def event_params
+      begin
+        params.require(:event).permit(:title, :description, :start_latitude, :start_longitude, :start_time, :type)
+      rescue
+        {}
       end
     end
 

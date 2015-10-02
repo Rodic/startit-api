@@ -9,7 +9,7 @@ class V1::AppController < ApplicationController
   end
 
   def forbidden_for_guest
-    render json: { error: "unauthorized. must be signed in" }, status: :unauthorized unless user_signed_in?
+    render json: { error: "must be signed in" }, status: :unauthorized unless user_signed_in?
   end
 
   def get_auth_jwt(user)
