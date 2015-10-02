@@ -8,11 +8,11 @@ FactoryGirl.define do
     association :creator, factory: :user
   end
 
-  factory :run, parent: :event, class: 'Run' do
+  factory :run, parent: :event, class: Run do
     type 'Run'
   end
 
-  factory :bike_ride, parent: :event, class: 'BikeRide' do
+  factory :bike_ride, parent: :event, class: BikeRide do
     type 'BikeRide'
   end
 end

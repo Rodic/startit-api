@@ -1,0 +1,2 @@
+class BikeRide < Event
+end

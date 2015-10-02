@@ -19,9 +19,3 @@ class Event < ActiveRecord::Base
   scope :upcoming, -> { where('start_time >= ?', Time.now) }
 
 end
-
-class Run < Event
-end
-
-class BikeRide < Event
-end
