@@ -47,7 +47,7 @@ RSpec.describe V1::EventsController, type: :controller do
 
     let(:invalid_params) {{ event: {} }}
 
-    describe "unsigned user" do
+    describe "guest" do
       it "fails with valid params" do
         post :create, valid_params
         expect(response).to have_http_status(:unauthorized)
@@ -92,23 +92,49 @@ RSpec.describe V1::EventsController, type: :controller do
 
   describe "update" do
 
-    it "returns 404 when event doesn't exists" do
-      put :update, id: 0, event: { description: "New description" }
-      expect(response).to have_http_status(:not_found)
+    describe "guest" do
+      it "fails with valid params" do
+        e = FactoryGirl.create(:event, description: "Old description")
+        put :update, id: e.id, event: { description: "New description" }
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to eq({ "error" => "unauthorized. must be signed in" })
+      end
     end
 
-    it "succeed when params are valid" do
-      e = FactoryGirl.create(:event, description: "Old description")
-      put :update, id: e.id, event: { description: "New description" }
-      expect(Event.find(e.id).description).to eq("New description")
-      expect(response).to have_http_status(:ok)
-    end
+    describe "signed in user" do
 
-    it "fails when params are not valid" do
-      e = FactoryGirl.create(:event)
-      put :update, id: e.id, event: { description: "" }
-      expect(JSON.parse(response.body)).to eq({"description" => ["can't be blank"]})
-      expect(response).to have_http_status(:unprocessable_entity)
+      let(:user) { FactoryGirl.create(:user) }
+
+      before :each do
+        request.headers["HTTP_AUTHORIZATION"] = "Bearer #{controller.get_auth_jwt(user)}"
+      end
+
+      it "returns 404 when event doesn't exists" do
+        put :update, id: 0, event: { description: "New description" }
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "succeed when params are valid and user is creator" do
+        e = FactoryGirl.create(:event, creator: user, description: "Old description")
+        put :update, id: e.id, event: { description: "New description" }
+        expect(Event.find(e.id).description).to eq("New description")
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "succeed when params are valid and user is creator" do
+        user2 = FactoryGirl.create(:user)
+        e = FactoryGirl.create(:event, creator: user2, description: "Old description")
+        put :update, id: e.id, event: { description: "New description" }
+        expect(response).to have_http_status(:unauthorized)
+        expect(JSON.parse(response.body)).to eq("error" => "unauthorized. must be event's creator")
+      end
+
+      it "fails when params are not valid" do
+        e = FactoryGirl.create(:event, creator: user)
+        put :update, id: e.id, event: { description: "" }
+        expect(JSON.parse(response.body)).to eq({"description" => ["can't be blank"]})
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
   end
 
