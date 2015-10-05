@@ -68,7 +68,7 @@ events = [
     description: "Saturday morning run on Ada Ciganlija. Two circles, should be about 15 km, easy tempo.",
     title: "Ada weekend run",
     type: "Run",
-    creator_id: u
+    creator: u
   },
   {
     start_latitude: '0.447702494E2',
@@ -77,7 +77,7 @@ events = [
     description: "High tempo ride through Kosutnjak. Experienced bikers are welcomed! Intense 2 hrs!",
     title: "Kosutnjak bike ride",
     type: "BikeRide",
-    creator_id: u
+    creator: u
   }
 ]
 
