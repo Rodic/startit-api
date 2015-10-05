@@ -16,6 +16,8 @@ class Event < ActiveRecord::Base
     end
   end
 
+  default_scope { includes(:creator) }
+
   scope :upcoming, -> { where('start_time >= ?', Time.now) }
 
 end
