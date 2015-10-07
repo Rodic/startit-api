@@ -14,6 +14,11 @@ RSpec.describe V1::UsersController, type: :controller do
         "username" => u.username
       })
     end
+
+    it "returns 'not found' when user doesn't exist" do
+      get :show, id: 0
+      expect(response).to have_http_status :not_found
+    end
   end
 
 end
