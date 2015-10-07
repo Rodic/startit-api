@@ -95,7 +95,7 @@ CREATE TABLE users (
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     CONSTRAINT users_latitude_check CHECK (((latitude >= ((-90))::numeric) AND (latitude <= (90)::numeric))),
     CONSTRAINT users_longitude_check CHECK (((longitude >= ((-180))::numeric) AND (longitude <= (180)::numeric))),
-    CONSTRAINT users_provider_check CHECK (((provider)::text = 'facebook'::text))
+    CONSTRAINT users_provider_check CHECK (((provider)::text = ANY ((ARRAY['facebook'::character varying, 'google'::character varying])::text[])))
 );
 
 

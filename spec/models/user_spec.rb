@@ -30,8 +30,8 @@ RSpec.describe User, type: :model do
         expect{ u.save(validate: false) }.to raise_exception(ActiveRecord::StatementInvalid, /PG::NotNullViolation/)
       end
 
-      it "fails when not 'facebook'" do
-        [ 'facebook' ].each do |p|
+      it "fails when not 'facebook' or 'google'" do
+        [ 'facebook', 'google' ].each do |p|
           u = FactoryGirl.build(:user, provider: p)
           expect{ u.save(validate: false) }.not_to raise_exception
         end
@@ -162,8 +162,8 @@ RSpec.describe User, type: :model do
         end
       end
 
-      it "fails when not 'facebook'" do
-        [ 'facebook' ].each do |p|
+      it "fails when not 'facebook' or 'google'" do
+        [ 'facebook', 'google' ].each do |p|
           u = FactoryGirl.build(:user, provider: p)
           expect(u).to be_valid
         end
@@ -171,7 +171,7 @@ RSpec.describe User, type: :model do
         [ 'unknown', 'test' ].each do |p|
           u = FactoryGirl.build(:user, provider: p)
           expect(u).not_to be_valid
-          expect(u.errors[:provider]).to include("must be on of the following: 'facebook'")
+          expect(u.errors[:provider]).to include("must be on of the following: 'facebook', 'google'")
         end
       end
     end

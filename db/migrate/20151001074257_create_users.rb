@@ -6,7 +6,7 @@ class CreateUsers < ActiveRecord::Migration
       CREATE TABLE users (
         id bigserial not null primary key,
 
-        provider varchar(25) not null CHECK(provider IN ('facebook')),
+        provider varchar(25) not null CHECK(provider IN ('facebook', 'google')),
         uid varchar(256) not null,
 
         username varchar(100) not null,
