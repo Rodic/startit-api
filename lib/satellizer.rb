@@ -106,7 +106,7 @@ class Google < SatellizerProvider
   private
 
     def access_token_uri
-      base = "https://www.googleapis.com/oauth2/v3/token"
+      "https://www.googleapis.com/oauth2/v3/token"
     end
 
     def access_token
