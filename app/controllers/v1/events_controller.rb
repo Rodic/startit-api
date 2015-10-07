@@ -4,6 +4,8 @@ class V1::EventsController < V1::AppController
   before_action :forbidden_for_guest, except: [ :index, :show ]
   before_action :allowed_to_creator, only: [ :update, :destroy ]
 
+  setter_for :event
+
   def index
     @events = Event.upcoming
     render json: @events, each_serializer: V1::EventSerializer, status: :ok
@@ -37,14 +39,6 @@ class V1::EventsController < V1::AppController
   end
 
   private
-
-    def set_event
-      begin
-        @event = Event.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        head :not_found
-      end
-    end
 
     def allowed_to_creator
       render json: { error: "must be event's creator" }, status: :unauthorized unless @event.creator == current_user

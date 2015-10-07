@@ -16,6 +16,16 @@ class V1::AppController < ApplicationController
     get_jwt({ iss: "start.it", id: user.id })
   end
 
+  def self.setter_for(record)
+    define_method "set_#{record}" do
+      begin
+        instance_variable_set("@#{record}", record.to_s.classify.constantize.find(params[:id]))
+      rescue ActiveRecord::RecordNotFound
+        head :not_found
+      end
+    end
+  end
+
   private
 
     def get_jwt(payload)
