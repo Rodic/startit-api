@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   namespace :v1 do
     resources :events, except: [ :new, :edit ]
+
+    get "/users/me" => "users#profile", as: :profile
     resources :users,  only:   [ :show ]
 
     post "/auth/:provider/callback" => "sessions#create", as: :auth_callback
