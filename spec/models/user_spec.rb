@@ -305,13 +305,13 @@ RSpec.describe User, type: :model do
 
     it "has many events as creator" do
       u = FactoryGirl.create(:user)
-      expect(u.created_events).to eq([])
+      expect(u.started_events).to eq([])
 
       2.times do
-        u.created_events << FactoryGirl.create(:event)
+        u.started_events << FactoryGirl.create(:event)
       end
 
-      expect(u.created_events.count).to eq(2)
+      expect(u.started_events.count).to eq(2)
 
       expect(Event.last.creator).to eq(u)
     end

@@ -40,7 +40,7 @@ RSpec.describe V1::UsersController, type: :controller do
           "latitude"  => user.latitude.to_s,
           "longitude" => user.longitude.to_s,
           "email"     => user.email,
-          "created_events" => user.created_events
+          "started_events" => user.started_events
         })
       end
     end

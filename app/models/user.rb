@@ -9,5 +9,5 @@ class User < ActiveRecord::Base
   validates_numericality_of :longitude, greater_than_or_equal_to: -180, less_than_or_equal_to: 180, unless: "longitude.blank?"
   validates_format_of       :email, with: EMAIL_MATCHER, message: "invalid format", unless: "email.blank?"
 
-  has_many :created_events, class_name: Event, foreign_key: :creator_id
+  has_many :started_events, class_name: Event, foreign_key: :creator_id
 end
