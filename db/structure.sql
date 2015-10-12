@@ -37,7 +37,8 @@ CREATE TABLE events (
     id bigint NOT NULL,
     start_latitude numeric(9,7) NOT NULL,
     start_longitude numeric(10,7) NOT NULL,
-    start_time timestamp with time zone NOT NULL,
+    start_time timestamp without time zone NOT NULL,
+    start_time_utc timestamp without time zone NOT NULL,
     description character varying(500) NOT NULL,
     title character varying(150) DEFAULT NULL::character varying,
     type character varying(25) NOT NULL,
@@ -46,7 +47,7 @@ CREATE TABLE events (
     creator_id bigint,
     CONSTRAINT events_start_latitude_check CHECK (((start_latitude >= ((-90))::numeric) AND (start_latitude <= (90)::numeric))),
     CONSTRAINT events_start_longitude_check CHECK (((start_longitude >= ((-180))::numeric) AND (start_longitude <= (180)::numeric))),
-    CONSTRAINT events_start_time_check CHECK ((start_time > now())),
+    CONSTRAINT events_start_time_utc_check CHECK ((start_time_utc > now())),
     CONSTRAINT events_type_check CHECK (((type)::text = ANY ((ARRAY['Run'::character varying, 'BikeRide'::character varying])::text[])))
 );
 

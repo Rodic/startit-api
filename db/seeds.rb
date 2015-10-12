@@ -28,7 +28,7 @@ events = [
   {
     start_latitude: '0.448415899E2',
     start_longitude: '0.204901574E2',
-    start_time: "2015-10-06 09:00:00",
+    start_time: "2025-10-06 09:00:00",
     description: "Easy 5 km run around Metro. Should take about 30 mins. Everyone is welcome!",
     title: "morning run",
     type: "Run",
@@ -37,7 +37,7 @@ events = [
   {
     start_latitude: '0.448394598E2',
     start_longitude:'0.204987405E2',
-    start_time: "2015-10-13 18:00:00",
+    start_time: "2025-10-13 18:00:00",
     description: "Bike ride to Pancevo and back!",
     title: nil,
     type: "BikeRide",
@@ -46,7 +46,7 @@ events = [
   {
     start_latitude: '0.447930648E2',
     start_longitude: '0.204480145E2',
-    start_time: "2015-10-10 23:00:00",
+    start_time: "2025-10-10 23:00:00",
     description: "Evening run through Hyde Park. About 7 km in 40 minutes!",
     title: "Hyde Park Run",
     type: "Run",
@@ -55,7 +55,7 @@ events = [
   {
     start_latitude: '0.448029314E2',
     start_longitude: '0.20510628E2',
-    start_time: "2015-10-28 17:00:00",
+    start_time: "2025-10-28 17:00:00",
     description: "Relaxing drive through Zvezdarska suma. No plans for distance or duration.",
     title: nil,
     type: "BikeRide",
@@ -64,7 +64,7 @@ events = [
   {
     start_latitude: '0.447887096E2',
     start_longitude: '0.204081462E2',
-    start_time: "2015-10-10 08:00:00",
+    start_time: "2025-10-10 08:00:00",
     description: "Saturday morning run on Ada Ciganlija. Two circles, should be about 15 km, easy tempo.",
     title: "Ada weekend run",
     type: "Run",
@@ -73,7 +73,7 @@ events = [
   {
     start_latitude: '0.447702494E2',
     start_longitude: '0.204375861E2',
-    start_time: "2015-10-17 18:00:00",
+    start_time: "2025-10-17 18:00:00",
     description: "High tempo ride through Kosutnjak. Experienced bikers are welcomed! Intense 2 hrs!",
     title: "Kosutnjak bike ride",
     type: "BikeRide",

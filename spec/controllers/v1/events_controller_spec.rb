@@ -4,11 +4,13 @@ RSpec.describe V1::EventsController, type: :controller do
 
   describe "index" do
 
+    let!(:asap) { (Time.now + 0.1.second).strftime("%Y %h %d %H:%M:%S.%L") }
+
     it "lists upcoming events" do
-      e1 = FactoryGirl.create(:run, start_time: 0.1.seconds.from_now)
+      e1 = FactoryGirl.create(:run, start_time: asap)
       e2 = FactoryGirl.create(:run, start_time: 2.days.from_now)
       e3 = FactoryGirl.create(:bike_ride, start_time: 1.week.from_now)
-      e4 = FactoryGirl.create(:bike_ride, start_time: 0.1.seconds.from_now)
+      e4 = FactoryGirl.create(:bike_ride, start_time: asap)
 
       sleep(0.2)
 

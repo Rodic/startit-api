@@ -1,5 +1,10 @@
 FactoryGirl.define do
   factory :event do
+
+    after(:build) do |event|
+      event.save_start_time_utc
+    end
+
     start_latitude  { rand * 90  * [1, -1].sample }
     start_longitude { rand * 180 * [1, -1].sample }
     start_time      { rand(1..30).days.from_now }

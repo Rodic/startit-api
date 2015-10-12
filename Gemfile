@@ -24,6 +24,8 @@ gem 'rack-cors', '0.4.0'
 
 gem 'jwt', '1.5.1'
 
+gem 'timezone', '0.4.2'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

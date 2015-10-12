@@ -385,15 +385,30 @@ RSpec.describe Event, type: :model do
   describe "scopes" do
 
     describe "upcoming" do
+
+      let!(:asap) { (Time.now + 0.1.second).strftime("%Y %h %d %H:%M:%S.%L") }
+
       it "lists upcoming events" do
-        e1 = FactoryGirl.create(:run, start_time: 0.1.seconds.from_now)
+        e1 = FactoryGirl.create(:run, start_time: asap)
         e2 = FactoryGirl.create(:run, start_time: 2.days.from_now)
         e3 = FactoryGirl.create(:bike_ride, start_time: 1.week.from_now)
-        e4 = FactoryGirl.create(:bike_ride, start_time: 0.1.seconds.from_now)
+        e4 = FactoryGirl.create(:bike_ride, start_time: asap)
 
         sleep(0.2)
 
         expect(Event.upcoming).to contain_exactly(e2, e3)
+      end
+    end
+  end
+
+  describe "callbacks" do
+
+    describe "save_start_time_utc" do
+      it "writes start_time in utc" do
+        e = Run.new(FactoryGirl.attributes_for(:run))
+        expect(e.start_time_utc).to be_nil
+        e.save
+        expect(e.save_start_time_utc).not_to be_nil
       end
     end
   end

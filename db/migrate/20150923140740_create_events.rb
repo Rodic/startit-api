@@ -7,7 +7,8 @@ class CreateEvents < ActiveRecord::Migration
         start_latitude  numeric(9, 7)  not null CHECK(start_latitude  >= -90  AND start_latitude  <= 90),
         start_longitude numeric(10, 7) not null CHECK(start_longitude >= -180 AND start_longitude <= 180),
 
-        start_time timestamp with time zone not null CHECK(start_time > NOW()),
+        start_time     timestamp without time zone not null,
+        start_time_utc timestamp without time zone not null CHECK(start_time_utc > NOW()),
 
         description varchar(500) not null,
         title varchar(150) default null,
