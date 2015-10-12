@@ -80,7 +80,7 @@ RSpec.describe V1::EventsController, type: :controller do
         errors = {
           "start_latitude"  => ["can't be blank", "is not a number"],
           "start_longitude" => ["can't be blank", "is not a number"],
-          "start_time"  => ["can't be blank"],
+          "start_time"  => ["can't be blank", "can't determine timezone without latitude and longitude"],
           "description" => ["can't be blank"],
           "type" => ["can't be blank", "must be 'Run' or 'BikeRide'"]
         }

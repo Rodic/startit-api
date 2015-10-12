@@ -13,10 +13,11 @@ class Event < ActiveRecord::Base
   belongs_to :creator, class_name: User
 
   def start_time_cannot_be_in_the_past
-    # unless lat and lon are provided timezone is unknown and start_time_utc is blank
-    # in that case we assume start_time is in UTC and we use it to determine is date in the past
-    time = start_time_utc || start_time
-    errors.add(:start_time, "can't be in the past") if time && time < Time.now
+    if start_time_utc && start_time_utc < Time.now
+      errors.add(:start_time, "can't be in the past")
+    elsif !start_latitude || !start_longitude
+      errors.add(:start_time, "can't determine timezone without latitude and longitude")
+    end
   end
 
   default_scope { includes(:creator) }
