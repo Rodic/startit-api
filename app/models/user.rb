@@ -10,4 +10,6 @@ class User < ActiveRecord::Base
   validates_format_of       :email, with: EMAIL_MATCHER, message: "invalid format", unless: "email.blank?"
 
   has_many :started_events, class_name: Event, foreign_key: :creator_id
+  has_many :participations
+  has_many :participating_events, through: :participations, source: :event
 end

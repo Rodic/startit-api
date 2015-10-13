@@ -379,8 +379,29 @@ RSpec.describe Event, type: :model do
 
       expect(e.creator).to eq(u)
     end
-  end
 
+    it "has many participations" do
+      e = FactoryGirl.create(:event)
+      p1 = FactoryGirl.build(:participation)
+      p2 = FactoryGirl.build(:participation)
+
+      e.participations << p1
+      e.participations << p2
+
+      expect(e.participations).to match_array([ p1, p2 ])
+    end
+
+    it "has many participants" do
+      e = FactoryGirl.create(:run)
+      u1 = FactoryGirl.create(:user)
+      u2 = FactoryGirl.create(:user)
+
+      e.participants << u1
+      e.participants << u2
+
+      expect(e.participants).to match_array([u1, u2])
+    end
+  end
 
   describe "scopes" do
 

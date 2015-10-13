@@ -315,5 +315,24 @@ RSpec.describe User, type: :model do
 
       expect(Event.last.creator).to eq(u)
     end
+
+    it "has many participations" do
+      u  = FactoryGirl.create(:user)
+      p1 = FactoryGirl.create(:participation, user: u)
+      p2 = FactoryGirl.create(:participation, user: u)
+
+      expect(u.participations).to match_array([ p1, p2 ])
+    end
+
+    it "has many participating_events" do
+      u = FactoryGirl.create(:user)
+      e1 = FactoryGirl.create(:run)
+      e2 = FactoryGirl.create(:bike_ride)
+
+      u.participating_events << e1
+      u.participating_events << e2
+
+      expect(u.participating_events).to match_array([e1, e2])
+    end
   end
 end

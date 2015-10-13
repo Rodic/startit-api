@@ -72,6 +72,18 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
+-- Name: participations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE participations (
+    user_id bigint NOT NULL,
+    event_id bigint NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -142,6 +154,14 @@ ALTER TABLE ONLY events
 
 
 --
+-- Name: participations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY participations
+    ADD CONSTRAINT participations_pkey PRIMARY KEY (user_id, event_id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -193,6 +213,22 @@ ALTER TABLE ONLY events
 
 
 --
+-- Name: participations_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY participations
+    ADD CONSTRAINT participations_event_id_fkey FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE;
+
+
+--
+-- Name: participations_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY participations
+    ADD CONSTRAINT participations_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -203,4 +239,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150923140740');
 INSERT INTO schema_migrations (version) VALUES ('20151001074257');
 
 INSERT INTO schema_migrations (version) VALUES ('20151002085949');
+
+INSERT INTO schema_migrations (version) VALUES ('20151013081530');
 

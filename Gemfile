@@ -26,6 +26,8 @@ gem 'jwt', '1.5.1'
 
 gem 'timezone', '0.4.2'
 
+gem 'composite_primary_keys', '8.1.1'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

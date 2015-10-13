@@ -44,6 +44,8 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     coderay (1.1.0)
+    composite_primary_keys (8.1.1)
+      activerecord (~> 4.2.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     debug_inspector (0.0.2)
@@ -188,6 +190,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (= 0.9.3)
+  composite_primary_keys (= 8.1.1)
   factory_girl_rails (= 4.5.0)
   figaro (= 1.1.0)
   guard-rspec (= 4.5.0)

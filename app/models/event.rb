@@ -11,6 +11,8 @@ class Event < ActiveRecord::Base
   before_validation :save_start_time_utc
 
   belongs_to :creator, class_name: User
+  has_many :participations
+  has_many :participants, through: :participations, source: :user
 
   def start_time_cannot_be_in_the_past
     if start_time_utc && start_time_utc < Time.now
@@ -34,5 +36,4 @@ class Event < ActiveRecord::Base
       self.start_time_utc = timezone.local_to_utc(self.start_time)
     end
   end
-
 end
