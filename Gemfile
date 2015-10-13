@@ -34,6 +34,7 @@ gem 'composite_primary_keys', '8.1.1'
 group :development, :test do
   gem 'rspec-rails',        '3.3.3'
   gem 'factory_girl_rails', '4.5.0'
+  gem 'faker',              '1.5.0'
 end
 
 group :test do
