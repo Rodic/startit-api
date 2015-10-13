@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     resources :events, except: [ :new, :edit ]
 
     get "/users/me" => "users#profile", as: :profile
-    resources :users,  only:   [ :show ]
+    resources :users,  only: :show
+
+    resources :participations, only: :create
 
     post "/auth/:provider/callback" => "sessions#create", as: :auth_callback
   end
