@@ -22,7 +22,7 @@ class Event < ActiveRecord::Base
     end
   end
 
-  default_scope { includes(:creator) }
+  default_scope { includes(:creator, :participants) }
 
   scope :upcoming, -> { where('start_time_utc >= ?', Time.now) }
 

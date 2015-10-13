@@ -3,6 +3,8 @@ class V1::EventSerializer < ActiveModel::Serializer
 
   has_one :creator
 
+  has_many :participants
+
   def start_time
     object.start_time.strftime("%Y %h %d %H:%M:%S")
   end
