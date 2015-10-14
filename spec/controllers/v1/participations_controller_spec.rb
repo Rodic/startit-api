@@ -27,7 +27,7 @@ RSpec.describe V1::ParticipationsController, type: :controller do
       it "fails when event doesn't exist" do
         expect{ post :create, participation: { event_id: 0 } }.not_to change{ Participation.count }
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(JSON.parse(response.body)).to eq({ "event_id" => [ "doesn't exist" ] })
+        expect(JSON.parse(response.body)).to eq({ "event_id" => [ 'is not present in table "events"' ] })
       end
     end
 

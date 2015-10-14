@@ -3,16 +3,13 @@ class V1::ParticipationsController < V1::AppController
   before_action :forbidden_for_guest, only: :create
 
   def create
-    begin
-      @participation = Participation.new(participation_params)
-      @participation.user = current_user
-      if @participation.save
-        head :created
-      else
-        render json: @participation.errors, status: :unprocessable_entity
-      end
-    rescue ActiveRecord::InvalidForeignKey
-      render json: { "event_id" => [ "doesn't exist" ] }, status: :unprocessable_entity
+    @participation = Participation.new(participation_params) do |p|
+      p.user = current_user
+    end
+    if @participation.save
+      head :created
+    else
+      render json: @participation.errors, status: :unprocessable_entity
     end
   end
 
