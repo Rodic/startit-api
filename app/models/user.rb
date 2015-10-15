@@ -11,5 +11,9 @@ class User < ActiveRecord::Base
 
   has_many :started_events, class_name: Event, foreign_key: :creator_id
   has_many :participations
-  has_many :participating_events, through: :participations, source: :event
+  has_many :events, through: :participations, source: :event
+
+  def joined_events
+    events.where('events.creator_id <> ?', id)
+  end
 end

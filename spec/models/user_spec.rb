@@ -303,7 +303,7 @@ RSpec.describe User, type: :model do
 
   describe "associations" do
 
-    it "has many events as creator" do
+    it "has many started_events (as a creator)" do
       u = FactoryGirl.create(:user)
       expect(u.started_events).to eq([])
 
@@ -312,7 +312,7 @@ RSpec.describe User, type: :model do
       end
 
       expect(u.started_events.count).to eq(2)
-
+      expect(Event.first.creator).to eq(u)
       expect(Event.last.creator).to eq(u)
     end
 
@@ -324,15 +324,31 @@ RSpec.describe User, type: :model do
       expect(u.participations).to match_array([ p1, p2 ])
     end
 
-    it "has many participating_events" do
+    it "has many events" do
       u = FactoryGirl.create(:user)
       e1 = FactoryGirl.create(:run)
       e2 = FactoryGirl.create(:bike_ride)
 
-      u.participating_events << e1
-      u.participating_events << e2
+      u.events << e1
+      u.events << e2
 
-      expect(u.participating_events).to match_array([e1, e2])
+      expect(u.events).to match_array([e1, e2])
     end
+  end
+
+  describe "instance methods" do
+
+    it "has joined_events" do
+      u  = FactoryGirl.create(:user)
+      e1 = FactoryGirl.create(:run, creator: u)
+      e2 = FactoryGirl.create(:bike_ride)
+      e3 = FactoryGirl.create(:run)
+
+      e2.participants << u
+      e3.participants << u
+
+      expect(u.joined_events).to match_array([ e2, e3 ])
+    end
+
   end
 end
