@@ -392,18 +392,39 @@ RSpec.describe Event, type: :model do
       expect(e.participations).to match_array([ Participation.find([e.creator, e]), p1, p3 ])
     end
 
-    it "has many participants" do
-      c = FactoryGirl.create(:user)
-      e = FactoryGirl.create(:run, creator: c)
-      u1 = FactoryGirl.create(:user)
-      u2 = FactoryGirl.create(:user)
-      u3 = FactoryGirl.create(:user)
+    describe "participants" do
 
-      e.participants << u1
-      e.participants << u3
+      it "has many" do
+        c = FactoryGirl.create(:user)
+        e = FactoryGirl.create(:run, creator: c)
+        u1 = FactoryGirl.create(:user)
+        u2 = FactoryGirl.create(:user)
+        u3 = FactoryGirl.create(:user)
 
-      expect(e.participants).to match_array([c, u1, u3])
+        e.participants << u1
+        e.participants << u3
+
+        expect(e.participants).to match_array([c, u1, u3])
+      end
+
+      it "creator is removed when destroyed" do
+        c = FactoryGirl.create(:user)
+        e = FactoryGirl.create(:run, creator: c)
+        u1 = FactoryGirl.create(:user)
+        u2 = FactoryGirl.create(:user)
+
+        e.participants << u1
+        e.participants << u2
+
+        expect(e.participants).to match_array([ c, u1, u2 ])
+
+        c.destroy
+        e.reload
+
+        expect(e.participants).to match_array([ u1, u2 ])
+      end
     end
+
   end
 
   describe "triggers" do
