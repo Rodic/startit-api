@@ -21,7 +21,8 @@ RSpec.describe Participation, type: :model do
 
       it "record gets deleted when user is destroyed" do
         u = FactoryGirl.create(:user)
-        expect{ FactoryGirl.create(:participation, user: u) }.to change{ Participation.count }.from(0).to(1)
+        # event creator is inserted in participations
+        expect{ FactoryGirl.create(:event, creator: u) }.to change{ Participation.count }.from(0).to(1)
         expect{ u.destroy }.to change{ Participation.count }.from(1).to(0)
       end
     end
@@ -38,9 +39,9 @@ RSpec.describe Participation, type: :model do
       end
 
       it "record gets deleted when event is destroyed" do
-        e = FactoryGirl.create(:event)
-        expect{ FactoryGirl.create(:participation, event: e) }.to change{ Participation.count }.from(0).to(1)
-        expect{ e.destroy }.to change{ Participation.count }.from(1).to(0)
+        # event creator is inserted in participations
+        expect{ FactoryGirl.create(:event) }.to change{ Participation.count }.from(0).to(1)
+        expect{ Event.last.destroy }.to change{ Participation.count }.from(1).to(0)
       end
     end
 

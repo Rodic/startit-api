@@ -25,6 +25,24 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: creator_to_participants(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION creator_to_participants() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+      BEGIN
+        IF new.creator_id IS NOT NULL THEN
+          INSERT INTO participations(user_id, event_id) VALUES(new.creator_id, new.id);
+          RETURN new;
+        ELSE
+          RETURN NULL;
+        END IF;
+      END
+      $$;
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -205,6 +223,13 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 
 
 --
+-- Name: creator_to_participants_trig; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER creator_to_participants_trig AFTER INSERT ON events FOR EACH ROW EXECUTE PROCEDURE creator_to_participants();
+
+
+--
 -- Name: events_creator_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -241,4 +266,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151001074257');
 INSERT INTO schema_migrations (version) VALUES ('20151002085949');
 
 INSERT INTO schema_migrations (version) VALUES ('20151013081530');
+
+INSERT INTO schema_migrations (version) VALUES ('20151015112505');
 

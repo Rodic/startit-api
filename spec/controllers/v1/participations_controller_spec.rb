@@ -14,7 +14,7 @@ RSpec.describe V1::ParticipationsController, type: :controller do
 
       it "creates participation when event exists" do
         e = FactoryGirl.create(:event)
-        expect{ post :create, participation: { event_id: e.id } }.to change{ Participation.count }.from(0).to(1)
+        expect{ post :create, participation: { event_id: e.id } }.to change{ Participation.count }.by(1)
         expect(response).to have_http_status(:created)
       end
 

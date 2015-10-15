@@ -383,23 +383,39 @@ RSpec.describe Event, type: :model do
     it "has many participations" do
       e = FactoryGirl.create(:event)
       p1 = FactoryGirl.build(:participation)
-      p2 = FactoryGirl.build(:participation)
+      p2 = FactoryGirl.create(:participation)
+      p3 = FactoryGirl.build(:participation)
 
       e.participations << p1
-      e.participations << p2
+      e.participations << p3
 
-      expect(e.participations).to match_array([ p1, p2 ])
+      expect(e.participations).to match_array([ Participation.find([e.creator, e]), p1, p3 ])
     end
 
     it "has many participants" do
-      e = FactoryGirl.create(:run)
+      c = FactoryGirl.create(:user)
+      e = FactoryGirl.create(:run, creator: c)
       u1 = FactoryGirl.create(:user)
       u2 = FactoryGirl.create(:user)
+      u3 = FactoryGirl.create(:user)
 
       e.participants << u1
-      e.participants << u2
+      e.participants << u3
 
-      expect(e.participants).to match_array([u1, u2])
+      expect(e.participants).to match_array([c, u1, u3])
+    end
+  end
+
+  describe "triggers" do
+
+    describe "creator_to_participants()" do
+
+      it "adds creator to participants list" do
+        u = FactoryGirl.create(:user)
+        e = FactoryGirl.create(:event, creator: u)
+
+        expect(e.participants).to include(u)
+      end
     end
   end
 
