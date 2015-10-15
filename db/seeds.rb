@@ -101,7 +101,7 @@ events = [
   {
     start_latitude: "0.447971837E2",
     start_longitude: "0.204053567E2",
-    start_time: "2015 Oct 25 07:00:00",
+    start_time: "2025 Oct 25 07:00:00",
     description: "A few laps around Savski kej. Early morning run.",
     title: "Savski kej",
     type: "Run"
@@ -109,7 +109,7 @@ events = [
   {
     start_latitude: "0.448152775E2",
     start_longitude: "0.204462148E2",
-    start_time: "2015 Oct 14 20:50:00",
+    start_time: "2025 Oct 14 20:50:00",
     description: "Evening run on Ušće. It will take 30 mins for 6 kms.",
     title: nil,
     type: "Run"
@@ -122,7 +122,7 @@ events.each do |e|
   event.creator = users.sample
 
   puts "\n#{'=' * 80}\nCreating event - #{event.title || event.description}"
-  
+
   participants = users.sample(rand(10))
   participants.each do |u|
     puts "\tAdding participant - #{u.username}"
