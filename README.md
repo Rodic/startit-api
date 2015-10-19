@@ -24,18 +24,19 @@ __Example__
 1) Go to https://developers.facebook.com/ and create new app. Once you obtain `clientId` and `clientSecret` send user to https://www.facebook.com/v2.3/dialog/oauth where she will get the authorization `code`.
 
 2) Make POST request to the API
-    ```sh
-    $ curl --data "code=AAA&clientId=BBB&clientSecret=CCCprovider=facebook&redirectUri=DDD" http://localhost:3000/v1/auth/facebook/callback
-    ```
+```sh
+$ curl --data "code=AAA&clientId=BBB&clientSecret=CCCprovider=facebook&redirectUri=DDD" http://localhost:3000/v1/auth/facebook/callback
+```
 3) API will then excange the code for the access token, read *username* and *email* from user's facebook profile and create new account (in case of the first visit). If process is successful, API will respond with JSON Web Token:
-
-    ```javascript
-    { "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" }
-    ```
+```javascript
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54"
+}
+```
 4) In order to identify user on subsequent requests, JWT has to be included in request's Authorization header.
-    ```sh
-    $ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" --data "event={}" http://localhost:3000/v1/events
-    ```
+```sh
+$ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" --data "event={}" http://localhost:3000/v1/events
+```
 
 ## Users
 
@@ -62,7 +63,7 @@ Registered user can get much more information from his own profile.
 __Example__
 
 ```sh
-$ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" -X GET http://localhost:3000/v1/users/me
+$ curl -H "Authorization:Bearer _token_" -X GET http://localhost:3000/v1/users/me
 ```
 
 ```javascript
@@ -135,7 +136,7 @@ In order to create an event user has to be registered.
 __Example__
 
 ```sh
-$ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" --data "event={description=Run on Danube riverbank.&start_latitude=44.82999505242894&start_longitude=20.464193619018488&start_time=22/10/2015 12:00&type=Run}" http://localhost:3000/v1/events
+$ curl -H "Authorization:Bearer _token_" --data "event={description=Run on Danube riverbank.&start_latitude=44.82999505242894&start_longitude=20.464193619018488&start_time=22/10/2015 12:00&type=Run}" http://localhost:3000/v1/events
 ```
 
 If successful, API respond with status code `201` and event in JSON
@@ -181,7 +182,7 @@ Only creator of the event can update it.
 __Example__
 
 ```sh
-$ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" --data "event[title]=Danube run" -X PUT http://localhost:3000/v1/events/16
+$ curl -H "Authorization:Bearer _token_" --data "event[title]=Danube run" -X PUT http://localhost:3000/v1/events/16
 ```
 
 Upon sucessful update, API respond with status code `200` and updated event.
@@ -215,7 +216,7 @@ Only creator of the event can destroy it.
 __Example__
 
 ```sh
-$ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" -X DELETE http://localhost:3000/v1/events/15
+$ curl -H "Authorization:Bearer _token_" -X DELETE http://localhost:3000/v1/events/15
 ```
 
 If successful API respond with `204`.
@@ -236,7 +237,7 @@ Only registered user can join.
 __Example__
 
 ```javascript
-$ curl -H "Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGFydC5pdCIsImlkIjozMn0.M9MzYJMPZNuhacq_kuVA_9yDKC6ftPTqoKlVwS_Wm54" --data "participation[event_id]=12" http://localhost:3000/v1/participations
+$ curl -H "Authorization:Bearer _token_" --data "participation[event_id]=12" http://localhost:3000/v1/participations
 ```
 
 If successful, API respond with `201`.
