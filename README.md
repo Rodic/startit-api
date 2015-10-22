@@ -136,7 +136,8 @@ In order to create an event user has to be registered.
 __Example__
 
 ```sh
-$ curl -H "Authorization:Bearer _token_" --data "event={description=Run on Danube riverbank.&start_latitude=44.82999505242894&start_longitude=20.464193619018488&start_time=22/10/2015 12:00&type=Run}" http://localhost:3000/v1/events
+$ curl -H "Authorization:Bearer _token_" --data "event[description]=Run on Danube riverbank.&event[start_latitude]=44.82999505242894&event[start_longitude]=20.464193619018488&event[start_time]=22/10/2015 12:00&event[type]=Run" http://localhost:3000/v1/events
+
 ```
 
 If successful, API respond with status code `201` and event in JSON
@@ -144,15 +145,22 @@ If successful, API respond with status code `201` and event in JSON
 ```javascript
 {
   "id":15,
+  "title":null,
+  "description":"Run on Danube riverbank.",
   "start_latitude":"44.82999505242894",
   "start_longitude":"20.464193619018488",
-  "start_time":"2015-10-22T12:00:00.000Z",
-  "start_time_utc":"2015-10-22T10:00:00.000Z",
-  "description":"Run on Danube riverbank.",
-  "title":null,
-  "created_at":"2015-10-19T15:59:25.784Z",
-  "updated_at":"2015-10-19T15:59:25.784Z",
-  "creator_id":32
+  "start_time":"2015 Oct 22 12:00:00",
+  "type":"Run",
+  "creator":{
+    "id":32,
+    "username":"lori"
+  },
+  "participants":[
+    {
+      "id":32,
+      "username":"lori"
+    }
+  ]
 }
 ```
 
@@ -182,22 +190,29 @@ Only creator of the event can update it.
 __Example__
 
 ```sh
-$ curl -H "Authorization:Bearer _token_" --data "event[title]=Danube run" -X PUT http://localhost:3000/v1/events/16
+$ curl -H "Authorization:Bearer _token_" --data "event[title]=Danube run" -X PUT http://localhost:3000/v1/events/15
 ```
 
 Upon sucessful update, API respond with status code `200` and updated event.
 ```javascript
 {
-  "id":16,
+  "id":15,
+  "title":"Danube run",
+  "description":"Run on Danube riverbank.",
   "start_latitude":"44.8299951",
   "start_longitude":"20.4641936",
-  "start_time":"2015-10-22T12:00:00.000Z",
-  "start_time_utc":"2015-10-22T10:00:00.000Z",
-  "description":"Run on Danube riverbank.",
-  "title":"Danube run",
-  "created_at":"2015-10-19T16:23:16.526Z",
-  "updated_at":"2015-10-19T16:25:08.425Z",
-  "creator_id":32
+  "start_time":"2015 Oct 22 12:00:00",
+  "type":"Run",
+  "creator":{
+    "id":32,
+    "username":"lori"
+  },
+  "participants":[
+    {
+      "id":32,
+      "username":"Djordje Kaplan"
+    }
+  ]
 }
 ```
 If data are invalid, status code is `422` and validation errors are presented.
