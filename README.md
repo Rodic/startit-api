@@ -254,7 +254,7 @@ Upon sucessful update, API respond with status code `200` and updated event.
   "participants":[
     {
       "id":32,
-      "username":"Djordje Kaplan"
+      "username":"lori"
     }
   ]
 }
