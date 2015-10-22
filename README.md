@@ -70,11 +70,55 @@ $ curl -H "Authorization:Bearer _token_" -X GET http://localhost:3000/v1/users/m
 {
   "id":16,
   "username":"lori",
-  "email":lori@example.com,
-  "latitude":null,
-  "longitude":null,
-  "joined_events":[],
-  "started_events":[]
+  "email":"lori@example.com",
+  "latitude":44.8402889,
+  "longitude":20.4934833,
+  "joined_events":[
+    {
+      "id":12,
+      "title":"Morning run",
+      "description":"Easy 5 km run around Metro. Should take about 30 mins. Everyone is welcome!",
+      "start_latitude":"44.8314559",
+      "start_longitude":"20.4342387",
+      "start_time":"2015 Oct 18 05:00:00",
+      "type":"Run",
+      "creator":{
+        "id":32,
+        "username":"darron"
+      },
+      "participants":[
+        {
+          "id":16,
+          "username":"lori"
+        },
+        {
+          "id":32,
+          "username":"darron"
+        }
+      ]
+    }
+  ],
+  "started_events":[
+    {
+      "id":15,
+      "title":"Danube run",
+      "description":"Run on Danube riverbank.",
+      "start_latitude":"44.8299951",
+      "start_longitude":"20.4641936",
+      "start_time":"2015 Oct 22 12:00:00",
+      "type":"Run",
+      "creator":{
+        "id":16,
+        "username":"lori"
+      },
+      "participants":[
+        {
+          "id":16,
+          "username":"lori"
+        }
+      ]
+    },
+  ]
 }
 ```
 
