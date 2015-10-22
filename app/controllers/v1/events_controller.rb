@@ -19,7 +19,7 @@ class V1::EventsController < V1::AppController
     @event = Event.new(event_params)
     @event.creator = current_user
     if @event.save
-      render json: @event, status: :created
+      render json: @event, serializer: V1::EventSerializer, status: :created
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class V1::EventsController < V1::AppController
 
   def update
     if @event.update(event_params)
-      render json: @event, status: :ok
+      render json: @event, serializer: V1::EventSerializer, status: :ok
     else
       render json: @event.errors, status: :unprocessable_entity
     end
