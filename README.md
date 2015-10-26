@@ -47,7 +47,7 @@ Any user (guest or registered) can query users by their `id`. However, in order 
 __Example__
 
 ```sh
-$ curl -X GET http://localhost:3000/v1/users/32
+$ curl -X GET http://localhost:3000/v1/users/16
 ```
 ```javascript
 {
